@@ -2,6 +2,10 @@ import {
   AppBar,
   Button,
   ClickAwayListener,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   ListItemIcon,
   ListItemText,
@@ -54,26 +58,63 @@ const icons: Record<IconName, IconComponent> = {
   Edit,
 }
 
+type DialogProps = {title: string}
+
 export function App() {
   const [isHeaderCollapsed, setIsHeaderCollapsed] = useState(false)
+  const [dialog, setDialog] = useState<DialogProps | null>(null)
 
   const toggleHeader = () => setIsHeaderCollapsed(!isHeaderCollapsed)
+
+  const openDialog = (props: DialogProps) => setDialog(props)
+  const closeDialog = () => setDialog(null)
 
   return (
     <>
       <Header isCollapsed={isHeaderCollapsed} toggle={toggleHeader}>
         <HeaderSection title="General">
-          <HeaderButton iconName={IconName.Add}>Add</HeaderButton>
-          <HeaderButton iconName={IconName.Edit}>Edit</HeaderButton>
-          <HeaderButton iconName={IconName.Delete}>Remove</HeaderButton>
+          <HeaderButton
+            iconName={IconName.Add}
+            onClick={() => openDialog({title: 'Add'})}
+          >
+            Add
+          </HeaderButton>
+          <HeaderButton
+            iconName={IconName.Edit}
+            onClick={() => openDialog({title: 'Edit'})}
+          >
+            Edit
+          </HeaderButton>
+          <HeaderButton
+            iconName={IconName.Delete}
+            onClick={() => openDialog({title: 'Delete'})}
+          >
+            Remove
+          </HeaderButton>
         </HeaderSection>
         <HeaderSection title="Selecting">
           <HeaderSelect iconName={IconName.Add} title="Add">
-            <HeaderSelectOption>Add</HeaderSelectOption>
-            <HeaderSelectOption>Add All</HeaderSelectOption>
+            <HeaderSelectOption onClick={() => openDialog({title: 'Add'})}>
+              Add
+            </HeaderSelectOption>
+            <HeaderSelectOption onClick={() => openDialog({title: 'Add All'})}>
+              Add All
+            </HeaderSelectOption>
           </HeaderSelect>
         </HeaderSection>
       </Header>
+
+      <Dialog open={!!dialog} onClose={closeDialog}>
+        <DialogTitle>{dialog?.title}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae
+            commodi tempore, dolores animi harum dolorem, consequuntur, quis
+            dignissimos quas aperiam quibusdam. Voluptatum alias omnis libero.
+            Quasi expedita quos nostrum tempore?
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }
@@ -195,16 +236,17 @@ const HeaderSection = ({
 }
 
 const HeaderButton = ({
-  iconName,
   children,
-}: PropsWithChildren & {iconName: IconName}) => {
+  iconName,
+  onClick,
+}: PropsWithChildren & {iconName: IconName; onClick?: () => void}) => {
   const {isCollapsed} = useHeaderContext()
 
   const Icon = icons[iconName]
 
   if (isCollapsed) {
     return (
-      <MenuItem>
+      <MenuItem onClick={onClick}>
         <ListItemIcon>
           <Icon fontSize="small" />
         </ListItemIcon>
@@ -214,7 +256,7 @@ const HeaderButton = ({
   }
 
   return (
-    <IconButton size="small">
+    <IconButton size="small" onClick={onClick}>
       <Icon fontSize="small" />
     </IconButton>
   )
@@ -255,9 +297,12 @@ const HeaderSelect = ({
   )
 }
 
-const HeaderSelectOption = ({children}: PropsWithChildren) => {
+const HeaderSelectOption = ({
+  children,
+  onClick,
+}: PropsWithChildren & {onClick?: () => void}) => {
   return (
-    <MenuItem>
+    <MenuItem onClick={onClick}>
       <ListItemText>{children}</ListItemText>
     </MenuItem>
   )
