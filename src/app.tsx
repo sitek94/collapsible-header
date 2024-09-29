@@ -13,6 +13,7 @@ import {
   MenuList,
   Paper,
   Popper,
+  TextField,
   Toolbar,
   Typography,
 } from '@material-ui/core'
@@ -20,10 +21,12 @@ import {
   Add,
   Edit,
   Delete,
+  Clear,
   KeyboardArrowDown,
   KeyboardArrowUp,
   KeyboardArrowLeft,
   KeyboardArrowRight,
+  Search,
 } from '@material-ui/icons'
 import {
   createContext,
@@ -46,6 +49,8 @@ enum IconName {
   ArrowLeft = 'ArrowLeft',
   ArrowRight = 'ArrowRight',
   ArrowUp = 'ArrowUp',
+  Search = 'Search',
+  Clear = 'Clear',
 }
 
 const icons: Record<IconName, IconComponent> = {
@@ -56,6 +61,8 @@ const icons: Record<IconName, IconComponent> = {
   ArrowUp: KeyboardArrowUp,
   Delete,
   Edit,
+  Search,
+  Clear,
 }
 
 type DialogProps = {title: string}
@@ -101,6 +108,10 @@ export function App() {
               Add All
             </HeaderSelectOption>
           </HeaderSelect>
+        </HeaderSection>
+
+        <HeaderSection title="Search">
+          <HeaderSearchField />
         </HeaderSection>
       </Header>
 
@@ -405,5 +416,19 @@ const PopoverPanel = ({
         </ClickAwayListener>
       </Paper>
     </Popper>
+  )
+}
+
+const HeaderSearchField = () => {
+  return (
+    <TextField
+      placeholder="Search"
+      InputProps={{
+        startAdornment: <Search fontSize="small" />,
+        endAdornment: (
+          <IconButton size="small">{<Clear fontSize="small" />}</IconButton>
+        ),
+      }}
+    />
   )
 }
