@@ -312,7 +312,7 @@ const PopoverContext = createContext<
   | {
       isOpen: boolean
       toggle: () => void
-      anchorRef: React.MutableRefObject<HTMLButtonElement | null>
+      anchorRef: any
       menuListId: string
     }
   | undefined
@@ -340,7 +340,7 @@ const usePopover = () => {
 }
 
 const Popover = ({children}: PropsWithChildren) => {
-  const anchorRef = useRef<HTMLButtonElement>(null)
+  const anchorRef = useRef<HTMLElement>(null)
   const menuListId = useId()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -366,14 +366,14 @@ const PopoverButton = ({children}: PropsWithChildren) => {
   const {isOpen, toggle, anchorRef, menuListId} = usePopoverContext()
 
   return (
-    <Button
+    <MenuItem
       ref={anchorRef}
       aria-controls={isOpen ? menuListId : undefined}
       aria-haspopup="true"
       onClick={toggle}
     >
       {children}
-    </Button>
+    </MenuItem>
   )
 }
 
