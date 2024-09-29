@@ -7,13 +7,13 @@ html {
 }
 
 main {
-  padding: 1rem;
+  padding: 2rem;
 }
 
 header {
   display: flex;
   gap: var(--header-section-gap);
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2rem;
 }
 
 header > * {
@@ -39,12 +39,12 @@ section .title {
   margin-bottom: 0.5rem;
 }
 
-section.general .buttons {
+section .items {
   display: flex;
   gap: 0.5rem;
 }
 
-.menu-items {
+.header-section-popover-panel {
   margin-top: 5px;
   background: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
